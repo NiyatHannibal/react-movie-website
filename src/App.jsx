@@ -9,7 +9,7 @@ import Details from './Pages/Details/Details';
 import Home from './Pages/Home/Home';
 import Movie from './Pages/Movie/Movie';
 import Search from './Pages/Search/Search';
-
+import TVSHOWS from './Pages/TVSHOWS/TVSHOWS'
 
 function App() {
 
@@ -24,6 +24,7 @@ function App() {
   <Route path='/details' element={<Details />} />
   <Route path='/movie' element={<Movie />} />
   <Route path='/search' element={<Search />} />
+  <Route path='/tvshows' element={<TVSHOWS />} />
   </Routes>
  
     </div>

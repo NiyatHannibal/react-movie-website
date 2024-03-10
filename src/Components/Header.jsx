@@ -30,9 +30,9 @@ function Header() {
             url: '/movies'
         },
         {
-            name: 'SERIES',
+            name: 'TVSHOWS',
             icon: HiTv,
-            url: '/series'
+            url: '/tvshows'
         },
     
         {
@@ -43,8 +43,8 @@ function Header() {
     ];
 
     return (
-        <div className='flex items-center justify-between p-1 bg-slate-800 '>
-            <div className='flex gap-20 items-center'>
+        <div className='flex items-center justify-between bg-slate-800 '>
+            <div className='flex gap-20 items-center '>
                 <img src={logo} className='w-[80px] md:w-[115px] object-cover rounded-full' alt="Logo" />
                 <div className='hidden md:flex gap-20'>
                     {menu.map((item, index) => (
