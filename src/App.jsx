@@ -4,30 +4,37 @@ import viteLogo from '/vite.svg'
  import './App.css'
 import Header from './Components/Header'
 import { BrowserRouter as Router,Routes,Route,} from 'react-router-dom';
-import Cart from './Pages/Cart/Cart';
+import Favourite from './Pages/Favourite/Favourite';
 import Details from './Pages/Details/Details';
 import Home from './Pages/Home/Home';
 import Movie from './Pages/Movie/Movie';
 import Search from './Pages/Search/Search';
-import TVSHOWS from './Pages/TVSHOWS/TVSHOWS'
-
+import TVSHOWS from './Pages/TVSHOWS/TVSHOWS';
+import LOGIN from './Pages/LOGIN/LOGIN';
+import Signup from './Pages/Signup/Signup';
+import { AuthContextProvider } from './context/AuthContext';
 function App() {
-
+ 
  const [count, setCount] = useState(0)
   return (
+    
+      <AuthContextProvider>
     <div className="">
-        <Header/>
-        
-  <Routes>
+      <Header/>
+      
+      <Routes>
   <Route path='/' element={<Home />} />
-  <Route path='/cart' element={<Cart/>} />
+  <Route path='/favourite' element={<Favourite/>} />
   <Route path='/details' element={<Details />} />
   <Route path='/movie' element={<Movie />} />
   <Route path='/search' element={<Search />} />
   <Route path='/tvshows' element={<TVSHOWS />} />
+  <Route path='/login' element={<LOGIN />} />
+   <Route path='/signup' element={<Signup />} />
   </Routes>
  
     </div>
+    </AuthContextProvider>
   )
 }
 
