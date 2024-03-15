@@ -1,54 +1,75 @@
 import React, { useState, useEffect } from 'react';
+import { UserAuth } from '../../context/AuthContext';
+import { db } from '../../Utility/firebase';
+import { updateDoc, doc, getDoc, arrayRemove } from 'firebase/firestore';
 function Favorite() {
+  const { user } = UserAuth();
+
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [favoriteTVShows, setFavoriteTVShows] = useState([]);
 
-  // Retrieve favorites from local storage on component mount
+  // Retrieve favorites from Firestore on component mount
   useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const movies = storedFavorites.filter(item => item.type === 'movie');
-    const tvShows = storedFavorites.filter(item => item.type === 'tvShow');
-    setFavoriteMovies(movies);
-    setFavoriteTVShows(tvShows);
-  }, []);
+    const fetchFavorites = async () => {
+      if (!user) return;
+
+      try {
+        const userDocRef = doc(db, 'users',  `${user?.email}`);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const userData = userDocSnapshot.data();
+          const movies = userData.savedShows.filter(item => item.type === 'movie');
+          const tvShows = userData.savedShows.filter(item => item.type === 'tvShow');
+          setFavoriteMovies(movies);
+          setFavoriteTVShows(tvShows);
+        }
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+      }
+    };
+
+    fetchFavorites();
+  }, [user]);
 
   // Function to handle removing a favorite item
-  const removeFavorite = (id) => {
-    const updatedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const index = updatedFavorites.findIndex(item => item.id === id);
-    if (index !== -1) {
-      updatedFavorites.splice(index, 1);
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-      const movies = updatedFavorites.filter(item => item.type === 'movie');
-      const tvShows = updatedFavorites.filter(item => item.type === 'tvShow');
-      setFavoriteMovies(movies);
-      setFavoriteTVShows(tvShows);
+  const removeFavorite = async (id) => {
+    if (!user) return;
+
+    try {
+      const userDocRef = doc(db, 'users', `${user?.email}`);
+      await updateDoc(userDocRef, {
+         savedShows: arrayRemove({ id })
+      });
+
+      // Refresh favorite lists after removing an item
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        const movies = userData.savedShows.filter(item => item.type === 'movie');
+        const tvShows = userData.savedShows.filter(item => item.type === 'tvShow');
+        setFavoriteMovies(movies);
+        setFavoriteTVShows(tvShows);
+      }
+    } catch (error) {
+      console.error('Error removing favorite:', error);
     }
   };
-   const calculateAverageRating = (reviews) => {
-    if (reviews.length === 0) return 0;
-    const totalRating = reviews.reduce((acc, review) => acc + review.rating, 0);
-    return totalRating / reviews.length;
-  };
+
   return (
     <div className="bg-[#213547] text-white">
-      <h1 className="text-2xl   mb-2"> Favourite Movies</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <h1 className="text-2xl  mb-2"> Favourite Movies</h1>
+      <div className="grid grid-cols-3 gap-2 ">
         {favoriteMovies.map((favorite) => (
           <div key={favorite.id} className="favorite-item">
+            <div className="w-full" style={{ width: '200px' }}> {/* Set a fixed width container */}
             <img 
               src={`https://image.tmdb.org/t/p/w500${favorite.poster_path}`} 
               alt={favorite.original_title} 
-              className="w-full h-auto shadow-lg cursor-pointer"
+              className="w-full mx-2 h-60 rounded-lg object-cover shadow-lg mb-4 transition-transform duration-300 transform hover:scale-105 cursor-pointer hover:border-[3px] border-gray-400"
             />
-            <p className="text-center">{favorite.original_title}</p>
-            {/* User Reviews */}
-            <div className="mb-2">
-              <textarea placeholder="Leave a review" className="w-full h-16 resize-none border rounded p-2"></textarea>
-              <button className="bg-green-500 px-3 py-1 rounded text-white mt-2">Submit Review</button>
             </div>
-            {/* Display other information about the favorite movie */}
-            <button onClick={() => removeFavorite(favorite.id)} className="block mx-auto mt-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">Remove</button>
+            <p >{favorite.original_title}</p>
+            <button onClick={() => removeFavorite(favorite.id)} className=" mx-auto mt-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">Remove</button>
           </div>
         ))}
       </div>
@@ -57,19 +78,15 @@ function Favorite() {
       <div className="grid grid-cols-3 gap-4">
         {favoriteTVShows.map((favorite) => (
           <div key={favorite.id} className="favorite-item">
+            <div className="w-full" style={{ width: '200px' }}> {/* Set a fixed width container */}
             <img 
               src={`https://image.tmdb.org/t/p/w500${favorite.poster_path}`} 
               alt={favorite.name} 
-              className="w-full h-auto shadow-lg  cursor-pointer"
+              className="w-full h-60 rounded-lg object-cover shadow-lg mb-4 transition-transform duration-300 transform hover:scale-105 cursor-pointer hover:border-[3px] border-gray-400"
             />
-            <p className="text-center">{favorite.name}</p>
-            {/* User Reviews */}
-            <div className="mb-2">
-              <textarea placeholder="Leave a review" className="w-full h-16 resize-none border rounded p-2"></textarea>
-              <button className="bg-green-500 px-3 py-1 rounded text-white mt-2">Submit Review</button>
             </div>
-            {/* Display other information about the favorite TV show */}
-            <button onClick={() => removeFavorite(favorite.id)} className="block mx-auto mt-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">Remove</button>
+            <p >{favorite.name}</p>
+            <button onClick={() => removeFavorite(favorite.id)} className=" mx-auto mt-2 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">Remove</button>
           </div>
         ))}
       </div>

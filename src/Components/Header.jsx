@@ -24,7 +24,7 @@ function Header() {
   };
 
   return (
-    <div className='flex items-center justify-between bg-[#213547] '>
+    <div className='flex items-center justify-between bg-black '>
       <div className='flex gap-20 items-center '>
         <img src={logo} className='w-[80px] md:w-[115px] object-cover rounded-full' alt="Logo" />
         <div className='hidden md:flex gap-20'>
@@ -40,14 +40,17 @@ function Header() {
           <Link to='/tvshows'>
             <HeaderItem name='TVSHOWS' Icon={HiTv} />
           </Link>
-          {user?.email ? (
-            <>
-            // Only render if user is signed in
+          {user?.email && (
             <Link to='/favourite'>
               <HeaderItem name='FAVOURITE' Icon={IoStar} />
             </Link>
-        
-              <button
+          )}
+          </div>
+          </div>
+          <div className='flex gap-10'>
+          {user?.email ? (
+            <>
+             <button
                 onClick={handleLogout}
                 className='bg-red-600 px-6 py-2 rounded cursor-pointer text-white'
               >
@@ -78,18 +81,16 @@ function Header() {
                 <Link to='/tvshows'>
                   <HeaderItem name='TVSHOWS' Icon={HiTv} />
                 </Link>
+                {user?.email && (
                 <Link to='/favourite'>
                   <HeaderItem name='FAVOURITE' Icon={IoStar} />
                 </Link>
+              )}
                 {user?.email ? (
                   <>
-                   // Only render if user is signed in
-            <Link to='/favourite'>
-              <HeaderItem name='FAVOURITE' Icon={IoStar} />
-            </Link>
                     <button
                       onClick={handleLogout}
-                      className='bg-red-600 px-6 py-2 rounded cursor-pointer text-white'
+                      className='bg-red-600 px-5 py-2 rounded cursor-pointer text-white'
                     >
                       Logout
                     </button>
@@ -111,7 +112,6 @@ function Header() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

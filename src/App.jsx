@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
  import './App.css'
 import Header from './Components/Header'
+import Footer from './Components/Footer'
 import { BrowserRouter as Router,Routes,Route,} from 'react-router-dom';
 import Favourite from './Pages/Favourite/Favourite';
 import Details from './Pages/Details/Details';
@@ -32,7 +33,7 @@ function App() {
   <Route path='/login' element={<LOGIN />} />
    <Route path='/signup' element={<Signup />} />
   </Routes>
- 
+   <Footer/>
     </div>
     </AuthContextProvider>
   )
