@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import GlobalApi from "../Services/GlobalApi";
-import MovieCard from "./MovieCard";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
-import HrMovieCard from "./HrMovieCard";
 
 function MovieList({ genreId, index_ }) {
   const [movieList, setMovieList] = useState([]);
@@ -14,50 +12,70 @@ function MovieList({ genreId, index_ }) {
 
   const getMovieByGenreId = () => {
     GlobalApi.getMovieByGenreId(genreId).then((resp) => {
-      // console.log(resp.data.results)
       setMovieList(resp.data.results);
     });
   };
 
-  const slideRight = (element) => {
-    element.scrollLeft += 500;
+  const slideRight = () => {
+    if (elementRef.current) {
+      elementRef.current.scrollLeft += 500; // Adjust the scroll amount as needed
+    }
   };
 
-  const slideLeft = (element) => {
-    element.scrollLeft -= 500;
+  const slideLeft = () => {
+    if (elementRef.current) {
+      elementRef.current.scrollLeft -= 500; // Adjust the scroll amount as needed
+    }
+  };
+
+  const handleLikeToggle = (id) => {
+    const updatedList = movieList.map((item, index) => {
+      if (index === id) {
+        return { ...item, liked: !item.liked };
+      }
+      return item;
+    });
+    setMovieList(updatedList);
   };
 
   return (
-    <div className="relative">
-      <IoChevronBackOutline
-        onClick={() => slideLeft(elementRef.current)}
-        className={`text-[50px] text-white p-2 z-10 cursor-pointer hidden md:block absolute ${
-          index_ % 3 === 0 ? "mt-[80px]" : "mt-[150px]"
-        }`}
-      />
- 
-      <div
-        ref={elementRef}
-        className="flex overflow-x-auto gap-8 scrollbar-none scroll-smooth pt-4 px-3 pb-4"
-      >
-        {movieList.map((item, index) => (
-          <React.Fragment key={index}>
-            {index_ % 3 === 0 ? (
-              <HrMovieCard movie={item} />
-            ) : (
-              <MovieCard movie={item} />
-            )}
-          </React.Fragment>
-        ))}
+    <>
+      <h2 className="text-white font-bold md:text-xl p-4"></h2>
+      <div className="relative">
+        <div
+          id="slider"
+          className="w-full h-full overflow-x-auto whitespace-nowrap scroll-smooth scrollbar-none"
+          ref={elementRef}
+        >
+          {movieList.map((item, id) => (
+            <div key={id} className="inline-block cursor-pointer relative p-2">
+              <img
+                className="w-40 h-auto block"
+                src={`https://image.tmdb.org/t/p/w500/${item?.backdrop_path}`}
+                alt={item?.title}
+              />
+              <div className="absolute top-0 left-0 w-full h-full hover:bg-cyan-950 opacity-100 text-white">
+                <p className="white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center">
+                  {item?.title}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          className="absolute top-0 bottom-0 left-0 ml-2 bg-gray-800 text-white rounded-full p-2 z-10"
+          onClick={slideLeft}
+        >
+          <IoChevronBackOutline />
+        </button>
+        <button
+          className="absolute top-0 bottom-0 right-0 mr-2 bg-gray-800 text-white rounded-full p-2 z-10"
+          onClick={slideRight}
+        >
+          <IoChevronForwardOutline />
+        </button>
       </div>
-
-      <IoChevronForwardOutline
-        onClick={() => slideRight(elementRef.current)}
-        className={`text-[50px] text-white hidden md:block p-2 cursor-pointer z-10 top-0 absolute ${
-          index_ % 3 === 0 ? "mt-[8px]" : "mt-[15px]"
-        }`}
-      />
-    </div>
+    </>
   );
 }
 

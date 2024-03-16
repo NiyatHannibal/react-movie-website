@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from "react";
 import Slider from "./Slider";
-
 import GenreMovieList from "./GenreMovieList";
- function Home() {
-  const [movie, setMovie] = useState([]);
 
-  const getMovie = async () => {
+function Home() {
+  const [movies, setMovies] = useState([]);
+
+  const fetchMovies = async () => {
     try {
-      await fetch(
+      const response = await fetch(
         "https://api.themoviedb.org/3/discover/movie?api_key=9a74db84a98e27257a0f5b7f83b21e02"
-      )
-        .then((res) => res.json())
-        .then((json) => setMovie(json.results));
-    } catch (err) {
-      console.error(err);
+      );
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
     }
   };
 
   useEffect(() => {
-    getMovie();
+    fetchMovies();
   }, []);
 
   return (
     <div>
       <Slider />
-
-      <GenreMovieList />
-      
+      <GenreMovieList movies={movies} />
     </div>
   );
-};
+}
 
-export default Home
+export default Home;

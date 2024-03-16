@@ -28,7 +28,7 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  
+  background-color: #000000;
 }
 
 h1 {
@@ -65,5 +65,17 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+div.p-4.px-8.md\:px-16 {
+  overflow-x: hidden;
+}
+body {
+  overflow-x: hidden;
+}
+@media (max-width: 768px) {
+  div.p-4.px-8.md\:px-16 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
