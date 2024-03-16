@@ -58,6 +58,7 @@ function TVSHOWS() {
     try {
       const response = await fetch('https://api.themoviedb.org/3/tv/on_the_air?api_key=fdeff6c8dc7c398d53999b4c61dee22d&language=en-US&page=1');
       const data = await response.json();
+      console.log(data.results);
       setAiringTodayTVShows(data.results);
     } catch(err) {
       console.error(err);

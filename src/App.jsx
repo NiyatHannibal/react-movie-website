@@ -12,6 +12,8 @@ import TVSHOWS from "./Pages/TVSHOWS/TVSHOWS";
 import LOGIN from "./Pages/LOGIN/LOGIN";
 import Signup from "./Pages/Signup/Signup";
 import { AuthContextProvider } from "./context/AuthContext";
+import DetailsTv from "./Pages/Details/DetailsTv";
+
 function App() {
   return (
     <AuthContextProvider>
@@ -23,6 +25,7 @@ function App() {
           <Route path="/favourite" element={<Favourite />} />
           <Route path="movies/:id" element={<Details />} />
           <Route path="/movie" element={<Movie />} />
+          <Route path="zembedi/:id" element={<DetailsTv />} />
           <Route path="/search" element={<Search />} />
           <Route path="/tvshows" element={<TVSHOWS />} />
           <Route path="/login" element={<LOGIN />} />
