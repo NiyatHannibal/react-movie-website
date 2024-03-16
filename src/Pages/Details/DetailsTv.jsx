@@ -3,33 +3,47 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./detail.css";
 
-function Details({ selectedGenre }) {
+function DetailsTv({ selectedGenre }) {
   const { id } = useParams();
   const [movieRecomenddetail, setMovieRecomendDetails] = useState([]);
   const [movieDetails, setMovieDetails] = useState([]);
   console.log(selectedGenre);
   console.log(id);
 
-  useEffect(() => {
-    const options = {
-      method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${id}`,
-      params: { language: "en-US" },
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4Y2VkNjk0NWE3ZTA5YjcyN2U0MDJhZWVhMjEyYTI5YiIsInN1YiI6IjY1ZWM2NjY2Mjg3MjNjMDE4NzNmZWM2MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4lWINe39ItoAJtB1NgKTsuc15gkrAXY6eGmLqBN36QU",
-      },
-    };
+  //   useEffect(() => {
+  //     const options = {
+  //       method: "GET",
+  //       url: `https://api.themoviedb.org/3/movie/${id}`,
+  //       params: { language: "en-US" },
+  //       headers: {
+  //         accept: "application/json",
+  //         Authorization:
+  //           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4Y2VkNjk0NWE3ZTA5YjcyN2U0MDJhZWVhMjEyYTI5YiIsInN1YiI6IjY1ZWM2NjY2Mjg3MjNjMDE4NzNmZWM2MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4lWINe39ItoAJtB1NgKTsuc15gkrAXY6eGmLqBN36QU",
+  //       },
+  //     };
 
+  //     axios
+  //       .request(options)
+  //       .then((response) => {
+  //         console.log(response.data);
+  //         setMovieDetails(response.data);
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }, [id]);
+
+  const apiKey = "8ced6945a7e09b727e402aeea212a29b";
+
+  useEffect(() => {
     axios
-      .request(options)
+      .get(`https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`)
       .then((response) => {
         console.log(response.data);
         setMovieDetails(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("There was a problem with the request:", error);
       });
   }, [id]);
 
@@ -144,4 +158,4 @@ function Details({ selectedGenre }) {
   );
 }
 
-export default Details;
+export default DetailsTv;

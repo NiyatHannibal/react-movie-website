@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import './search.css'; // Import the CSS file for styling
+import React, { useState } from "react";
+import "./search.css";
+import { Link } from "react-router-dom";
 
-const API_KEY = '9a74db84a98e27257a0f5b7f83b21e02'; // Replace with your API key
-
-const Search= () => {
+function Search({ onSelect }) {
+  const API_KEY = "8ced6945a7e09b727e402aeea212a29b";
   const [movies, setMovies] = useState([]);
-  const [actorName, setActorName] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('');
-  const [filmTitle, setFilmTitle] = useState('');
+  const [actorName, setActorName] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [filmTitle, setFilmTitle] = useState("");
+
+  const handleEvent = (movie1) => {
+    console.log(movie1);
+    onSelect(movie1);
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -31,6 +36,7 @@ const Search= () => {
       }
       const response = await fetch(url);
       const data = await response.json();
+      console.log(data.results);
       setMovies(data.results);
     } catch (error) {
       console.error(error);
@@ -68,28 +74,31 @@ const Search= () => {
           value={filmTitle}
           onChange={(e) => setFilmTitle(e.target.value)}
         />
-        <button className="button" type="submit">Search</button>
+        <button className="button" type="submit">
+          Search
+        </button>
       </form>
       <div className="movies">
         {movies.map((movie) => (
-          <div key={movie.id} className="movie">
-            <img
-              className="movie-poster"
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-            />
-            <h2 className="movie-title">{movie.title}</h2>
-            {/* <p className="movie-overview">{movie.overview}</p> */}
-          </div>
+          <Link
+            to={`/movies/${movie.id}`}
+            style={{ textDecoration: "none" }}
+            onClick={() => handleEvent(movie.genre_ids)}
+          >
+            <div key={movie.id} className="movie">
+              <img
+                className="movie-poster"
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.title}
+              />
+              <h2 className="movie-title">{movie.title}</h2>
+              <p className="movie-overview">{movie.overview}</p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>
-   
   );
-};
-
-
-
-
+}
 
 export default Search;

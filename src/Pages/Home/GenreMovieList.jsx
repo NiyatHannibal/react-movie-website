@@ -1,6 +1,7 @@
 import React from "react";
 import GenresList from "../../Constant/GenresList";
 import MovieList from "../../Components/MovieList";
+import { Link } from "react-router-dom"
 
 function GenreMovieList() {
   return (

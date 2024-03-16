@@ -1,5 +1,6 @@
 import React from 'react'
 import heartIcon from '../assets/Images/heartIcon.png';
+import { Link } from 'react-router-dom';
 
 function Tvpagecard({ tv, handleAddToFavourite }) {
   return (

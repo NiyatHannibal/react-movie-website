@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const screenWidth = window.innerWidth;
 
@@ -49,13 +50,15 @@ function Slider() {
         ref={elementRef}
       >
         {movies.map((movie) => (
-          <img
-            key={movie.id}
-            src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-            alt={movie.title}
-            style={{ width: "100%", height: "auto" }}
-            className="object-cover object-left-top mr-5 rounded-md hover:border-[4px] border-gray-400 transition-all duration-100 ease-in"
-          />
+          <Link to={`/movies/${movie.id}`}>
+            <img
+              key={movie.id}
+              src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+              alt={movie.title}
+              style={{ width: "100%", height: "auto" }}
+              className="object-cover object-left-top mr-5 rounded-md hover:border-[4px] border-gray-400 transition-all duration-100 ease-in"
+            />
+          </Link>
         ))}
       </div>
     </div>
@@ -63,4 +66,3 @@ function Slider() {
 }
 
 export default Slider;
-
