@@ -141,11 +141,15 @@ function Details() {
         <div className="detailscontentdecrip">
           {" "}
           <h1>{movieDetails.original_title}</h1>
-          {/* <ul>
-            {movieDetails.genres.map((genre, index) => (
-              <li key={index}>{genre.name}</li>
-            ))}
-          </ul> */}
+          {movieDetails &&
+            movieDetails.genres &&
+            movieDetails.genres.length > 0 && (
+              <ul>
+                {movieDetails.genres.map((genre, index) => (
+                  <li key={index}>{genre.name}</li>
+                ))}
+              </ul>
+            )}
           <p>{movieDetails.overview}</p>
           <p>Release Date: {movieDetails.release_date}</p>
         </div>
