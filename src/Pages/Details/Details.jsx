@@ -3,11 +3,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./detail.css";
 
-function Details({ selectedGenre }) {
+function Details() {
   const { id } = useParams();
   const [movieRecomenddetail, setMovieRecomendDetails] = useState([]);
   const [movieDetails, setMovieDetails] = useState([]);
-  console.log(selectedGenre);
+  const [firstMember, setFirstMember] = useState(null);
   console.log(id);
 
   useEffect(() => {
@@ -34,9 +34,19 @@ function Details({ selectedGenre }) {
   }, [id]);
 
   useEffect(() => {
+    if (movieDetails && movieDetails.genres && movieDetails.genres.length > 0) {
+      console.log(movieDetails);
+      console.log(movieDetails.genres[0].id);
+      setFirstMember(movieDetails.genres[0].id);
+    }
+  }, [movieDetails]);
+
+  console.log(firstMember);
+
+  useEffect(() => {
     const API_KEY = "8ced6945a7e09b727e402aeea212a29b";
 
-    const fetchMoviesByGenre = async (selectedGenre) => {
+    const fetchMoviesByGenre = async (firstMember) => {
       const url = `https://api.themoviedb.org/3/discover/movie`;
       const params = {
         api_key: API_KEY,
@@ -45,20 +55,22 @@ function Details({ selectedGenre }) {
         language: "en-US",
         page: 1,
         sort_by: "popularity.desc",
-        with_genres: selectedGenre,
+        with_genres: firstMember,
       };
 
       try {
         const response = await axios.get(url, { params });
         console.log(response.data.results);
-        setMovieRecomendDetails(response.data.results.slice(0, 3));
+        const data1 = response.data.results.sort(() => Math.random() - 0.5);
+        console.log(data1);
+        setMovieRecomendDetails(data1.slice(3, 6));
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchMoviesByGenre(selectedGenre);
-  }, [selectedGenre]);
+    fetchMoviesByGenre(firstMember);
+  }, [firstMember]);
 
   if (!movieDetails) {
     return <div>Loading...</div>;

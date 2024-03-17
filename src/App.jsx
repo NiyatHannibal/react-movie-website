@@ -28,10 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/favourite" element={<Favourite />} />
-          <Route
-            path="movies/:id"
-            element={<Details selectedGenre={selectedGenre} />}
-          />
+          <Route path="movies/:id" element={<Details />} />
           <Route path="/movie" element={<Movie />} />
           <Route
             path="/search"
