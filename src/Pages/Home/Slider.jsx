@@ -33,25 +33,36 @@ function Slider() {
   };
 
   const sliderRight = () => {
-    elementRef.current.scrollLeft += screenWidth;
+    const currentIndex = movies.findIndex(
+      (movie) => movie.id === selectedMovie.id
+    );
+    const nextIndex = (currentIndex + 1) % movies.length;
+    setSelectedMovie(movies[nextIndex]);
   };
 
   const sliderLeft = () => {
-    elementRef.current.scrollLeft -= screenWidth;
+    const currentIndex = movies.findIndex(
+      (movie) => movie.id === selectedMovie.id
+    );
+    const prevIndex = (currentIndex - 1 + movies.length) % movies.length;
+    setSelectedMovie(movies[prevIndex]);
   };
 
   return (
     <div style={{ width: `${screenWidth}px`, position: "relative" }}>
       <HiChevronLeft
-        className="hidden md:block text-white text-[30px] absolute mx-8 mt-[150px] cursor-pointer "
+        className="hidden md:block text-white text-[30px] absolute mx-8 mt-[150px] cursor-pointer z-10"
         onClick={sliderLeft}
       />
       <HiChevronRight
-        className="hidden md:block text-white text-[30px] absolute mx-8 mt-[150px] cursor-pointer right-0"
+        className="hidden md:block text-white text-[30px] absolute mx-8 mt-[150px] cursor-pointer right-0 z-10"
         onClick={sliderRight}
       />
 
-      <div className="w-full h-[550px] text-white " ref={elementRef}>
+      <div
+        className="flex overflow-x-auto w-full h-[550px] text-white "
+        ref={elementRef}
+      >
         <div className="w-full h-full">
           <div className="absolute w-full h-[550px] bg-gradient-to-r from-black"></div>
           {selectedMovie && (
@@ -61,7 +72,7 @@ function Slider() {
               alt={selectedMovie.title}
             />
           )}
-          <div className="absolute w-full top-[20%] p-4 md:p-8">
+          <div className="absolute w-full top-[25%] p-4 md:p-8">
             <h1 className="text-3xl md:text-5xl font-bold">
               {selectedMovie?.title}
             </h1>
