@@ -34,12 +34,39 @@ function Header() {
         <h1 className="text-blue-500 text-2xl md:text-3xl font-bold">REVO</h1>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 ml-auto">
+        {" "}
+        {/* Added ml-auto to move items to the right */}
+        {user?.email ? ( // Render logout button if user is logged in
+          <button
+            onClick={handleLogout}
+            className="bg-[#12314d] px-5 py-2 rounded cursor-pointer text-white"
+          >
+            Logout
+          </button>
+        ) : (
+          // Render sign in and sign up buttons if user is not logged in
+          <>
+            <Link to="/login">
+              <button className="bg-[#12314d] px-6 py-2 rounded cursor-pointer text-white">
+                Sign In
+              </button>
+            </Link>
+            <Link to="/signup">
+              <button className="bg-[#12314d] px-6 py-2 rounded cursor-pointer text-white">
+                Sign Up
+              </button>
+            </Link>
+          </>
+        )}
+        {/* Menu bar icon */}
         <IoMdMenu
           className="text-white text-[30px] cursor-pointer"
           onClick={() => setToggle(!toggle)}
         />
       </div>
+
+      {/* Conditional rendering for the menu */}
       {toggle && (
         <div className="absolute mt-40 bg-[#121212] border-[1px] border-gray-700 p-3 px-8 py-4 z-30 flex flex-col">
           <Link to="/">
@@ -60,28 +87,6 @@ function Header() {
             </Link>
           )}
         </div>
-      )}
-
-      {user?.email ? (
-        <button
-          onClick={handleLogout}
-          className="bg-red-600 px-5 py-2 rounded cursor-pointer text-white ml-2"
-        >
-          Logout
-        </button>
-      ) : (
-        <>
-          <Link to="/login">
-            <button className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white">
-              Sign In
-            </button>
-          </Link>
-          <Link to="/signup">
-            <button className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white">
-              Sign Up
-            </button>
-          </Link>
-        </>
       )}
     </div>
   );
