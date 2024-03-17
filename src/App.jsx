@@ -13,13 +13,6 @@ import LOGIN from "./Pages/LOGIN/LOGIN";
 import Signup from "./Pages/Signup/Signup";
 import { AuthContextProvider } from "./context/AuthContext";
 function App() {
-  const [selectedGenre, setSelectedGenre] = useState(null);
-  const selectbygenere = (genres) => {
-    console.log(genres);
-    const [firstElement] = genres;
-    setSelectedGenre(firstElement);
-  };
-
   return (
     <AuthContextProvider>
       <div className="">
@@ -30,10 +23,7 @@ function App() {
           <Route path="/favourite" element={<Favourite />} />
           <Route path="movies/:id" element={<Details />} />
           <Route path="/movie" element={<Movie />} />
-          <Route
-            path="/search"
-            element={<Search onSelect={(movie1) => selectbygenere(movie1)} />}
-          />
+          <Route path="/search" element={<Search />} />
           <Route path="/tvshows" element={<TVSHOWS />} />
           <Route path="/login" element={<LOGIN />} />
           <Route path="/signup" element={<Signup />} />

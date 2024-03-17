@@ -2,17 +2,12 @@ import React, { useState } from "react";
 import "./search.css";
 import { Link } from "react-router-dom";
 
-function Search({ onSelect }) {
+function Search() {
   const API_KEY = "8ced6945a7e09b727e402aeea212a29b";
   const [movies, setMovies] = useState([]);
   const [actorName, setActorName] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [filmTitle, setFilmTitle] = useState("");
-
-  const handleEvent = (movie1) => {
-    console.log(movie1);
-    onSelect(movie1);
-  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -83,7 +78,7 @@ function Search({ onSelect }) {
           <Link
             to={`/movies/${movie.id}`}
             style={{ textDecoration: "none" }}
-            onClick={() => handleEvent(movie.genre_ids)}
+            // onClick={() => handleEvent(movie.genre_ids)}
           >
             <div key={movie.id} className="movie">
               <img
